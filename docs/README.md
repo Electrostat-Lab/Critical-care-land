@@ -40,6 +40,7 @@ these phenomena in a miniaturized form of the actualization, and finally some gu
 * [Generic Model for drugs pharmacokinetics and pharmacodynamics]()
 
 ### Clinically-based models (A blend of Conceptual, and Iconic formalizations):
+* [Cover Model for Critical Care Algorithms](https://electrostat-lab.github.io/Critical-care-land/scientific-models/cover.dot.svg)
 * [Generic Model for History analysis, physical examination, diagnostic evaluation, and patient timeline]()
 * [Generic Model for Cerebral Stroke Syndromes]()
 * [Generic Model for Myocardial Stroke Syndromes]()

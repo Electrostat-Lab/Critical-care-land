@@ -8,6 +8,8 @@ temp=$(pwd)
 
 cd "${entry}" || exit $?
 
+sudo apt install graphviz
+
 dot -T"${output_type}" "./${code}" -o "${code}.${output_type}"
 
 cd $temp

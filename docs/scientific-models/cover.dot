@@ -1,0 +1,109 @@
+digraph CriticalCareLand {
+    Title [shape="plaintext", label="A scientific model for the critical care system."];
+    subgraph cluster_LifeSupport {
+		color="#FF0000";
+		bgcolor="#FFDDDD";
+	    // Guidelines Nodes
+	    BLS [shape="doubleoctagon", label="Basic Life Support\n(ACC/AHA)"];
+	    ACLS [shape="doubleoctagon", label="Advanced Cardiovascular Life Support\n(ACC/AHA)"];
+	    Airway [shape="doubleoctagon", label="Airway Management Support\n(SCCM)"];
+
+		// Guidelines Nodes
+		node [shape=record, style="filled", fillcolor="yellow"];
+	    ChainOfSurvivial [label="<f0> Early Recognition | <f1> Activation of the Emergency Response System | <f2> High Quality CPR | <f3> Defibrillation (DC/Pharmacological) | <f4> Post resuscitation support"];
+		CPR [shape="box", image="./assets/cpr.png", color="blue"]
+		// BLS Algorithm
+
+		ETI [shape="cylinder", label="Indications for RSI:\n *Hypoxemic Respiratory Failure (RF-Type I).\n *Hypercapnic Respiratory Failure (RF-Type II).\n *Impaired conscious level of GCS 8 or below.\n *Generic Airway protection strategy (e.g., against severe laryngeal edema in 3rd degree burns - laryngeal obstruction in space occupying lesions.)", fillcolor="#DD9999", color="red"]
+
+		// ACLS Algorithm 
+		ACLS1 [shape="component", label="Start CPR\n\n *Give Oxygen.\n *Attach Monitor/Defibrillator.\n *IV/IO Access.\n *Basic Airway Management, Bag-valve Mask 30 compressions: 2 breaths.\n", fillcolor="#BBBBFF"];
+
+		ACLS2 [shape="hexagon", label="Shockable Rhythm?", fillcolor="yellow"];
+		ACLS3 [shape="box3d", label="VF/pVT (i.e., hemodynamically unstable VT)", fillcolor="#BBBBFF"]
+		// PEA [shape="box", image="./assets/asystole.png", color="red"]
+		VF [shape="box", image="./assets/vf.png", color="red"]
+		pVT [shape="box", image="./assets/vt.png", color="red"]
+		ACLS3 -> VF [arrowhead="invdot", label="CAUTION!"]
+		ACLS3 -> pVT [arrowhead="invdot", label="CAUTION!"]
+
+		ACLS4 [shape="box3d", label="Asystole/PEA", fillcolor="#BBBBFF"]
+		ASYSTOLE [shape="box", image="./assets/asystole.png", color="red"]
+		ACLS4 -> ASYSTOLE [arrowhead="invdot", label="CAUTION!"]
+
+		ACLS5 [shape="cylinder", label="DC Shock;\n *Biphasic device, doses of 120-200J Energy power or maximum power if unsure.\n *Monophasic device, doses of Energy Power 360J.\n", fillcolor="#FF6666", color="red"]
+		ACLS6 [shape="cylinder", label="Epinephrine ASAP;\n 1 mg STAT IV/IO \n", fillcolor="#FF6666", color="red"]
+		ACLS7 [shape="tripleoctagon", label="CPR 2 min\n *Minimize interruptions.\n *Push no less than 5 cm depth and fast (100-120/min) allowing a complete chest recoil.\n *Treat Reversible exacerbating causes (hypovolemia - hypoxia - metabolic derangements -\n hypothermia - shock syndromes - neuro-cardio stroke syndromes -\n intoxications)", fillcolor="yellow"]
+		
+		REFRACTORY_RHYTHM [shape="octagon", label="Refractory Rhythm (e.g., Refractory VF/pVT) defined as 2 subsequent DCs w/o recovery for Shockable Rhythms?", fillcolor="#FF6666", color="red"]
+		PHARMCO_CONVERSION [shape="octagon", fillcolor="#66FF66", label="Initiate Pharmacological cardioversion\n *Amiodarone IV/IO first dose @[1-1.5]mg/kg - second dose @[150]mg.\n OR\n *Lidocane IV/IO first dose @[1-1.5]mg/kg - second dose @[0.5-0.75]mg/kg.\n"]
+
+		ACLSROSC [shape="tripleoctagon", label="Return of Spontaneous Circulation (ROSC)?\n *Pulse & BP.\n *Abrupt sustained increase in PETCO2 (typically >= 40 mm.Hg).\n *Spontaneous arterial pressure waves w/ intra-arterial radial catheter.", fillcolor="#66FF66", color="green"]
+
+		EPI_MAINTAIN [shape="pentagon", label="Epinephrine Emergency Maintenance: \n 1 mg/[3-5] mins.\n", fillcolor="#BBBBFF"]
+		ADVANCED_AIRWAY [shape="pentagon", label="Advanced Airway Management: \n *Endotracheal intubation or supraglottic advanced airway (Laryngeal Airway Mask). \n *Waveform Capnography or capnometry to confirm and monitor ET tube placement. \n *Once advanced airway in place, give 1 breath every 6 seconds (10 breaths/min) with continuous chest compressions. \n*Mechanical Ventilatory support in AC/VC Mode.\n", fillcolor="#BBBBFF"]
+
+		// Airway Support Algorithm
+		ACLS7 -> ADVANCED_AIRWAY [label="Consider", arrowhead="crow", arrowtail="crow"]
+		Airway -> ETI [shape="diamond", label="Rapid Sequence Intubation (RSI)"]
+
+		// Epinephrine Maintenance
+		ACLS7 -> EPI_MAINTAIN [label="After 1st Shock, and every 3-5 min", arrowhead="crow", arrowtail="crow"]
+
+	    
+    }
+
+	subgraph cluster_CriticalCareEmergencies {
+		color="#FF0000";
+		bgcolor="#FFBBBB";
+		ARDS [label="Acute Respiratory Distress Syndromes\n(ATS)"];
+	    Shock [shape="doubleoctagon", label="Shock Syndromes Management\n(SCCM)"];
+
+	}
+
+    subgraph cluster_Strokes {
+	    color="#FF0000";
+		bgcolor="#FFBBBB";
+		label="stroke";
+	    Stroke [shape="doubleoctagon", label="Stroke Syndromes\nRecognition, Diagnosis, & Management\n(ACC/AHA)"];
+	    ACS [shape="doubleoctagon", label="Acute Coronary Syndromes\nRecognition, Diagnosis, & Management\n(ESC & NICE)"];
+    }
+    
+    subgraph cluster_RenalSupport {
+		color="#FF0000";
+		bgcolor="#FFBBBB";
+		AKI [shape="doubleoctagon", label="Acute Kidney Injury\n(KDIGO)"];
+	    CKD [shape="doubleoctagon", label="Chronic Kidney Disease\n(KDIGO)"];
+	    Metabolic [shape="doubleoctagon", label="Metabolic Derangement\nSyndromes"];
+    }
+    
+
+    Hyperglycemic [label="Hyperglycemic Syndromes\n(ADA)"];
+
+    // Pathways and Interactions
+    BLS -> ChainOfSurvivial:f0
+    ACLS -> ChainOfSurvivial:f2
+	ChainOfSurvivial:f2 -> CPR [label="Deterministic Automata"]
+	ChainOfSurvivial:f3 -> CPR
+	CPR -> ACLS1 [arrowhead="diamond", label="Implementation"]
+	ACLS1 -> ACLS2 [label="Conditional Non-deterministic Automata"]
+	ACLS2 -> ACLS3 [label="YES"]
+	ACLS3 -> ACLS5 
+	ACLS2 -> ACLS4 [label="NO"]
+	
+	ACLS4 -> ACLS6
+	ACLS6 -> ACLS7
+	ACLS5 -> ACLS7
+	ACLS7 -> ACLS2 [label="Re-assess Rhythm"]
+	ACLS7 -> REFRACTORY_RHYTHM
+	REFRACTORY_RHYTHM -> PHARMCO_CONVERSION [arrowhead="crow"]
+	PHARMCO_CONVERSION -> ACLS2 [label="Rhythm Reassessment"]
+
+	// ROSC and post-resuscitation care
+	ACLS2 -> ACLSROSC [label="NO"]
+	ACLSROSC-> ChainOfSurvivial:f4 [label="Terminate Advanced Life Support"]
+
+	ACLS7 -> Shock [arrowhead="diamond", color="red", label="No termination | Parallel Execution"]
+}
+
+
